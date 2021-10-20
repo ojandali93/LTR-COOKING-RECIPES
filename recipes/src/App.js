@@ -1,4 +1,5 @@
 import RecipeList from './components/RecipeList'
+import './css/app.css'
 
 function App() {
   return (
