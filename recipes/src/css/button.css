@@ -11,9 +11,18 @@
 
 .btn--primary {
     color: white;
-    background-color: skyblue;
+    background-color: #6495ed;
 }
 
 .btn--primary:hover {
-    background-color: teal;
+    background-color: #4682b4;
+}
+
+.btn--danger {
+    color: white;
+    background-color: #dc143c;
+}
+
+.btn--danger:hover {
+    background-color: #d73b3e;
 }
