@@ -1,9 +1,10 @@
 import React, { useContext } from 'react'
 import RecipeIngredientsEdit from './RecipeIngredientsEdit'
 import { RecipeContext } from '../App'
+import { v4 as uuidv4 } from 'uuid'
 
 export default function RecipeEdit({ recipe }) {
-  const { handleRecipeChange } = useContext(RecipeContext)
+  const { handleRecipeChange, handleRecipeSelect } = useContext(RecipeContext)
 
   function handleChange(changes){
     handleRecipeChange(recipe.id, { ...recipe, ...changes})
@@ -15,11 +16,24 @@ export default function RecipeEdit({ recipe }) {
     newIngredients[index] = ingredient
     handleChange({ ingredients: newIngredients })
   }
+
+  function handleIngredientAdd(){
+    const newIngredient = {
+      id: uuidv4(),
+      name: '',
+      amount: ''
+    }
+    handleChange({ ingredients: [...recipe.ingredients, newIngredient]})
+  }
+
+  function handleIngredientDelete(id){
+    handleChange({ ingredients: recipe.ingredients.filter(i => i.id !== id)})
+  }
    
   return (
     <div className="recipe-edit">
       <div className="recipe-edit__remove-button-container">
-        <button className="btn recipe-edit__remove-button">&times;</button>
+        <button onClick={() => handleRecipeSelect(undefined)} className="btn recipe-edit__remove-button">&times;</button>
       </div>
       <div>
         <label htmlFor="name">Name</label>
@@ -40,11 +54,11 @@ export default function RecipeEdit({ recipe }) {
         <div>Amount</div>
         <div></div>
         {recipe.ingredients.map(ingredient => {
-          return <RecipeIngredientsEdit key={ingredient.id} handleIngredientChange={handleIngredientChange} ingredient={ingredient}/>
+          return <RecipeIngredientsEdit key={ingredient.id} handleIngredientChange={handleIngredientChange} handleIngredientDelete={handleIngredientDelete} ingredient={ingredient}/>
         })}
       </div>
       <div>
-        <button>Add Ingredients</button>
+        <button onClick={() => handleIngredientAdd()}>Add Ingredients</button>
       </div>
     </div>
   )
